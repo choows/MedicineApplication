@@ -29,7 +29,7 @@ function GenerateReport({ route, navigation }) {
     const RetreiveReport = () => {
         const DayArray = [];
         if (fromdate.getTime() > todate.getTime()) {
-            ShowNormalAlert("Generate Report Failed", "Invalid Date Range");
+            ShowNormalAlert(CommonMessage.default.GenerateReport.Failed, CommonMessage.default.GenerateReport.FailedReason.InvalidDateRange);
             return;
         }
         let selected_start_date = new Date();
@@ -44,7 +44,6 @@ function GenerateReport({ route, navigation }) {
 
         const path = "/user/" + UserInfo.uid;
         firebase.database().ref(path).once('value').then((resp) => {
-            // console.log(resp.val());
             let this_date = [];
 
             for (var i in resp.val()) {
@@ -95,7 +94,7 @@ function GenerateReport({ route, navigation }) {
                 </View>
                 <View style={[styles.DatetimePickerView, { alignContent: 'center', justifyContent: 'center', alignItems: 'center' }]}>
                     <TouchableOpacity style={styles.GenerateReportTouchable} onPress={() => { RetreiveReport() }}>
-                        <Text style={{ color: 'white' }}>Generate Report</Text>
+                        <Text style={{ color: 'white' }}>{CommonMessage.default.GenerateReport.Title}</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={[styles.DatetimePickerView, {flexDirection:'column', alignContent: 'center', justifyContent: 'center', alignItems: 'center' }]}>
@@ -104,16 +103,16 @@ function GenerateReport({ route, navigation }) {
                             <>
                                 <View style={styles.TableRow}>
                                     <View style={[styles.TablerowItem, { width: '25%' }]}>
-                                        <Text style={{fontWeight:'900'}}>Date</Text>
+                                        <Text style={{fontWeight:'900'}}>{CommonMessage.default.GenerateReport.Field.Date}</Text>
                                     </View>
                                     <View style={[styles.TablerowItem, { width: '25%' }]}>
-                                        <Text style={{fontWeight:'bold'}}>Time</Text>
+                                        <Text style={{fontWeight:'bold'}}>{CommonMessage.default.GenerateReport.Field.Time}</Text>
                                     </View>
                                     <View style={[styles.TablerowItem, { width: '25%' }]}>
-                                        <Text style={{fontWeight:'bold'}}>Medicine Name</Text>
+                                        <Text style={{fontWeight:'bold'}}>{CommonMessage.default.GenerateReport.Field.MedicineName}</Text>
                                     </View>
                                     <View style={[styles.TablerowItem, { width: '25%' }]}>
-                                        <Text style={{fontWeight:'bold'}}>Notes</Text>
+                                        <Text style={{fontWeight:'bold'}}>{CommonMessage.default.GenerateReport.Field.Note}</Text>
                                     </View>
                                 </View>
                                 {

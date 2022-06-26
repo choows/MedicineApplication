@@ -48,9 +48,6 @@ function LoginScreen({ navigation }) {
           Email: Email,
           Password: Password
         })).then(() => {
-          // navigation.navigate('Home', {
-          //   user: JSON.stringify(resp.user)
-          // });
           navigation.navigate('Main', {
             screen: 'Home',
             params: {  user: JSON.stringify(resp.user) },
@@ -64,17 +61,17 @@ function LoginScreen({ navigation }) {
   }
   return (
     <View style={styles.container}>
-      <TextInput placeholder='Email' style={styles.EmailInput} onChangeText={(text) => { setUserEmail(text) }} />
-      <TextInput placeholder='Password' secureTextEntry={true} style={styles.PasswordInput} onChangeText={(text) => { setUserPassword(text) }} />
+      <TextInput placeholder={CommonMessage.default.Form.PlaceHolder.Email} style={styles.EmailInput} onChangeText={(text) => { setUserEmail(text) }} />
+      <TextInput placeholder={CommonMessage.default.Form.PlaceHolder.Password} secureTextEntry={true} style={styles.PasswordInput} onChangeText={(text) => { setUserPassword(text) }} />
       <TouchableOpacity style={styles.LoginButton} onPress={Login}>
-        <Text style={styles.LoginText}>Login</Text>
+        <Text style={styles.LoginText}>{CommonMessage.default.Login.ButtonLogin}</Text>
       </TouchableOpacity>
       <View style={styles.ForgotPasswordView}>
         <TouchableOpacity style={styles.Col} onPress={ForgotPassword}>
-          <Text style={styles.ForgorPasswordtex}>Forgot Password</Text>
+          <Text style={styles.ForgorPasswordtex}>{CommonMessage.default.Login.ButtonForgetPassword}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.Col}>
-          <Text style={styles.ForgorPasswordtex} onPress={CreateAccount}>Create Account</Text>
+          <Text style={styles.ForgorPasswordtex} onPress={CreateAccount}>{CommonMessage.default.Login.CreateAccount}</Text>
         </TouchableOpacity>
       </View>
     </View>

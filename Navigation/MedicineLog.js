@@ -67,7 +67,6 @@ function MedicineLog({ route, navigation }) {
             for (var i in resp.val()) {
                 const d = resp.val()[i];
                 if (d.Date == date.toDateString()) {
-                    //{"Active": true, "Date": "Tue Jun 07 2022", "Name": "sample 123", "Notes": "asdasd", "Time": "20:53:16"}
                     this_date.push({
                         Active: d.Active,
                         Date: d.Date,
@@ -85,7 +84,6 @@ function MedicineLog({ route, navigation }) {
         forceUpdate();
     }
     React.useEffect(() => {
-        // console.log(UserInfo)
         changeDate(0);
     }, []);
     React.useEffect(() => {
@@ -123,7 +121,7 @@ function MedicineLog({ route, navigation }) {
                             </View>
                         </View>
                     ) :
-                        <Text>No Record </Text>
+                        <Text>{CommonMessage.default.MediLog.NoRecord}</Text>
                 }
             </ScrollView>
             <BottomNavigationBar navigation={navigation} user={UserInfo} />

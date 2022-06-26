@@ -8,6 +8,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import BottomNavigationBar from "../Component/BottomNavigationBar";
 import * as ImagePicker from 'react-native-image-picker';
 import PushNotification from "react-native-push-notification";
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 // import{firebase} from "@react-native-firebase/storage";
@@ -155,7 +156,8 @@ function AddMedicine({ route, navigation }) {
   };
   return (
     <View style={styles.container}>
-      <View style={[styles.RowContainer, { marginBottom: 100 }]}>
+      <ScrollView style={{width:'100%' , alignContent:'center', paddingTop:40}}>
+      <View style={[styles.RowContainer, { marginBottom: 100 , alignSelf:'center'}]}>
         <TouchableOpacity onPress={() => { selectImage() }}>
           <Image
             style={{ width: 150, height: 150, borderRadius: 100 , backgroundColor:'red'}}
@@ -207,6 +209,7 @@ function AddMedicine({ route, navigation }) {
       <TouchableOpacity style={styles.ButtonView} onPress={() => { AddNewReminder() }}>
         <Text style={styles.ButtonText}>Add New Reminder</Text>
       </TouchableOpacity>
+      </ScrollView>
       <BottomNavigationBar navigation={navigation} user={UserInfo} />
     </View>
   )
@@ -228,7 +231,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignContent: 'center',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    alignSelf:'center'
   },
   ButtonText: {
     fontWeight: 'bold'
@@ -241,7 +245,8 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     alignItems: 'center',
     textAlignVertical: 'center',
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
+    alignSelf:'center'
   },
   InnerTextInput: {
     height: '100%',

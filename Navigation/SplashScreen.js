@@ -2,11 +2,13 @@ import * as React from 'react';
 import { View, Text, StyleSheet, Image, Button, TouchableOpacity } from 'react-native';
 
 function SplashScreen({ navigation }) {
+
+
   const onPress = () => {
     navigation.navigate('Login')
-    //console.log("Hello world")
   }
 
+  
   return (
     <View style={styles.container}>
       <Text style={styles.Header}>Medical 2R & First Aid</Text>

@@ -2,12 +2,11 @@ import * as React from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
 import auth, { firebase } from '@react-native-firebase/auth';
 import { ShowNormalAlert } from "../CommonFunction/Alert";
-import * as CommonMessage from "../CommonFunction/CommonString";
 import BottomNavigationBar from "../Component/BottomNavigationBar";
 import { Icon } from "@rneui/themed";
+import * as CommonString from "../CommonFunction/CommonString";
+import { ScrollView } from 'react-native-gesture-handler';
 
-
-// const authForDefaultApp = firebase.auth();
 function Profile({ route, navigation }) {
     const { user } = route.params;
     const UserInfo = JSON.parse(user)
@@ -16,6 +15,8 @@ function Profile({ route, navigation }) {
     const [oldPassword, setOldPassword] = React.useState('');
     const [newPassword, setnewPassword] = React.useState('');
     const [confirmNewPassword, setConfirmNewPassword] = React.useState('');
+
+
     const updateProfile = () => {
         const update = {
             displayName: displayName
@@ -29,44 +30,49 @@ function Profile({ route, navigation }) {
     }
     const ChangePassword = () => {
         if (!oldPassword || !newPassword || !confirmNewPassword) {
-            ShowNormalAlert("Change Password Failed", "Information Required");
+            ShowNormalAlert(CommonString.default.UpdateProfile.ChangePassword.Failed, CommonString.default.UpdateProfile.ChangePassword.FailedReason.InformationRequired);
             return;
         }
         if (newPassword != confirmNewPassword) {
-            ShowNormalAlert("Change Password Failed", "Unmatch Password");
+            ShowNormalAlert(CommonString.default.UpdateProfile.ChangePassword.Failed, CommonString.default.UpdateProfile.ChangePassword.FailedReason.Unmatch);
             return;
         }
         const emailCred = firebase.auth.EmailAuthProvider.credential(
             firebase.auth().currentUser, oldPassword);
         firebase.auth().currentUser.reauthenticateWithCredential(emailCred)
             .then(() => {
-                return firebase.auth().currentUser.updatePassword(newPassword);
-                ShowNormalAlert("Change Password", "Successed !");
+                return firebase.auth().currentUser.updatePassword(newPassword).then(() => {
+                    ShowNormalAlert("", CommonString.default.UpdateProfile.ChangePassword.Success);
+                });
+
             })
             .catch(error => {
                 // Handle error.
-                ShowNormalAlert("Change Password Failed", error);
+                ShowNormalAlert(CommonString.default.UpdateProfile.ChangePassword.Failed, error);
             });
     }
     return (
         <View style={styles.container}>
-            <Icon
-                name='person'
-                type='ionicons'
-                size={80} />
-            <TextInput style={styles.TextInputStyle} value={email} onChangeText={setEmail} placeholder={"Email"} />
-            <TextInput style={styles.TextInputStyle} value={displayName} onChangeText={setDisplayName} placeholder="displayName" />
-            <TouchableOpacity style={styles.ButtonView} onPress={() => { updateProfile() }}>
-                <Text>Update Profile</Text>
-            </TouchableOpacity>
+            <ScrollView style={{width:'100%' , height:'100%', alignContent:'center', paddingTop:30}}>
+                <Icon
+                    name='person'
+                    type='ionicons'
+                    size={80} />
+                <TextInput style={styles.TextInputStyle} value={email} onChangeText={setEmail} placeholder={CommonString.default.Form.PlaceHolder.Email} />
+                <TextInput style={styles.TextInputStyle} value={displayName} onChangeText={setDisplayName} placeholder={CommonString.default.Form.PlaceHolder.DisplayName} />
+                <TouchableOpacity style={styles.ButtonView} onPress={() => { updateProfile() }}>
+                    <Text>{CommonString.default.UpdateProfile.ButtonText.UpdateProfile}</Text>
+                </TouchableOpacity>
 
-            <TextInput style={styles.TextInputStyle} value={oldPassword} onChangeText={setOldPassword} placeholder="Old Password" />
-            <TextInput style={styles.TextInputStyle} value={newPassword} onChangeText={setnewPassword} placeholder="New Password" />
-            <TextInput style={styles.TextInputStyle} value={confirmNewPassword} onChangeText={setConfirmNewPassword} placeholder="Coinfirm New Password" />
+                <TextInput style={styles.TextInputStyle} value={oldPassword} onChangeText={setOldPassword} placeholder={CommonString.default.Form.PlaceHolder.OldPassword} />
+                <TextInput style={styles.TextInputStyle} value={newPassword} onChangeText={setnewPassword} placeholder={CommonString.default.Form.PlaceHolder.NewPassword} />
+                <TextInput style={styles.TextInputStyle} value={confirmNewPassword} onChangeText={setConfirmNewPassword} placeholder={CommonString.default.Form.PlaceHolder.ConfirmPassword} />
 
-            <TouchableOpacity style={styles.SecondButtonView} onPress={() => { ChangePassword() }}>
-                <Text>Change Password</Text>
-            </TouchableOpacity>
+                <TouchableOpacity style={styles.SecondButtonView} onPress={() => { ChangePassword() }}>
+                    <Text>{CommonString.default.UpdateProfile.ButtonText.ChangePassword}</Text>
+                </TouchableOpacity>
+            </ScrollView>
+
             <BottomNavigationBar navigation={navigation} user={UserInfo} />
         </View>);
 }
@@ -86,7 +92,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 15,
         textAlign: 'center',
-        marginTop: 15
+        marginTop: 15,
+        alignSelf:'center'
     },
     ButtonView: {
         width: '80%',
@@ -95,7 +102,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: "center",
         paddingVertical: 10,
-        marginTop: 20
+        marginTop: 20,
+        alignSelf:'center'
     },
     SecondButtonView: {
         width: '80%',
@@ -104,7 +112,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: "center",
         paddingVertical: 10,
-        marginTop: 20
+        marginTop: 20,
+        alignSelf:'center'
     }
 });
 

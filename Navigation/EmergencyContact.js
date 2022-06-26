@@ -53,19 +53,19 @@ function EmergencyContact({ route, navigation }) {
     const UpdateEmergencyContact = () => {
 
         if (!Name) {
-            ShowNormalAlert("Emergency Contact Update Failed", "Name Required");
+            ShowNormalAlert(CommonMessage.default.EmergencyContact.UpdateFailed, CommonMessage.default.EmergencyContact.FailReason.NameRequired);
             return;
         }
         if (!Relation) {
-            ShowNormalAlert("Emergency Contact Update Failed", "Relation Required");
+            ShowNormalAlert(CommonMessage.default.EmergencyContact.UpdateFailed, CommonMessage.default.EmergencyContact.FailReason.RelationRequired);
             return;
         }
         if (!PhoneNumber) {
-            ShowNormalAlert("Emergency Contact Update Failed", "Phone Number Required");
+            ShowNormalAlert(CommonMessage.default.EmergencyContact.UpdateFailed,  CommonMessage.default.EmergencyContact.FailReason.PhoneRequired);
             return;
         }
         if (!Address) {
-            ShowNormalAlert("Emergency Contact Update Failed", "Address Required");
+            ShowNormalAlert(CommonMessage.default.EmergencyContact.UpdateFailed,  CommonMessage.default.EmergencyContact.FailReason.AddressRequired);
         }
         const path = "EmergencyContact/" + UserInfo.uid;
         const JsonFormat = {
@@ -78,13 +78,13 @@ function EmergencyContact({ route, navigation }) {
             firebase.database()
                 .ref(path)
                 .update(JsonFormat)
-                .then(() => { ShowNormalAlert("Emergency Contact", "Updated"); GetData(); });
+                .then(() => { ShowNormalAlert(CommonMessage.default.EmergencyContact.Title, CommonMessage.default.EmergencyContact.UpdateSuccess); GetData(); });
         } else {
             firebase.database().ref(path).set(JsonFormat).then((resp) => {
-                ShowNormalAlert("Emergency Contact", "Updated");
+                ShowNormalAlert(CommonMessage.default.EmergencyContact.Title, CommonMessage.default.EmergencyContact.UpdateSuccess);
                 GetData();
             }).catch((exp) => {
-                ShowNormalAlert("Update Emergency Info failed", exp);
+                ShowNormalAlert(CommonMessage.default.EmergencyContact.UpdateFailed, exp);
             })
         }
 
@@ -108,10 +108,10 @@ function EmergencyContact({ route, navigation }) {
             name='person'
             type='ionicons'
             size={80} />
-        <TextInput style={styles.TextInputStyle} value={Name} onChangeText={setName} placeholder={"Name"} />
-        <TextInput style={styles.TextInputStyle} value={Relation} onChangeText={setRelation} placeholder={"Relationship"} />
-        <TextInput style={styles.TextInputStyle} value={PhoneNumber} onChangeText={setPhoneNumber} placeholder={"Phone Number"} />
-        <TextInput style={styles.TextInputStyle} value={Address} onChangeText={setAddress} placeholder={"Address"} />
+        <TextInput style={styles.TextInputStyle} value={Name} onChangeText={setName} placeholder={CommonMessage.default.Form.PlaceHolder.Name} />
+        <TextInput style={styles.TextInputStyle} value={Relation} onChangeText={setRelation} placeholder={CommonMessage.default.Form.PlaceHolder.Relationship} />
+        <TextInput style={styles.TextInputStyle} value={PhoneNumber} onChangeText={setPhoneNumber} placeholder={CommonMessage.default.Form.PlaceHolder.PhoneNumber} />
+        <TextInput style={styles.TextInputStyle} value={Address} onChangeText={setAddress} placeholder={CommonMessage.default.Form.PlaceHolder.Address} />
         <View style={{ width: '80%', flexDirection: 'row' }}>
 
             <TouchableOpacity style={styles.ButtonView} onPress={() => { Call() }}>
