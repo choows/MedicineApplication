@@ -28,6 +28,9 @@ function GenerateReport({ route, navigation }) {
     };
     const RetreiveReport = () => {
         const DayArray = [];
+        todate.setHours(23);
+        todate.setMinutes(59);
+        todate.setSeconds(59);
         if (fromdate.getTime() > todate.getTime()) {
             ShowNormalAlert(CommonMessage.default.GenerateReport.Failed, CommonMessage.default.GenerateReport.FailedReason.InvalidDateRange);
             return;
@@ -117,7 +120,7 @@ function GenerateReport({ route, navigation }) {
                                 </View>
                                 {
                                     ReportDate.map((x) =>
-                                        <View style={styles.TableRow}>
+                                        <View style={styles.TableRow} key={JSON.stringify(x)}>
                                             <View style={[styles.TablerowItem, { width: '25%' }]}>
                                                 <Text>{x.Date}</Text>
                                             </View>

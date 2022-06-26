@@ -16,6 +16,7 @@ import EmergencyContact from "./Navigation/EmergencyContact";
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import CustomDrawerContent from "./Component/DrawerScreen";
 import GenerateReport from "./Navigation/GenerateReport";
+import EditMedicine from "./Navigation/EditMedicine";
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -66,6 +67,7 @@ function App() {
         <Stack.Screen name='SplashScreen' component={SplashScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name='CreateAccount' component={CreateAccount} options={{ headerShown: false }} />
+        <Stack.Screen name='EditMedicine' component={EditMedicine} options={{headerShown:false}}/>
         <Stack.Screen name='AddMedicine' component={AddMedicine} options={{
         header: (props) => (
           <TopLeftNavigation navigation={props} title={"Add Reminder"} />

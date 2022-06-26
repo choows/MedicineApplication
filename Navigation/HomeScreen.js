@@ -22,6 +22,7 @@ function HomeScreen({ route, navigation }) {
 
 
     React.useEffect(() => {
+        
         GetReq();
     }, []);
 
@@ -123,6 +124,7 @@ function HomeScreen({ route, navigation }) {
         const date = new Date();
         const path = "/user/" + UserInfo.uid;
         firebase.database().ref(path).on('value', (resp) => {
+            setShowPie(false);
             let this_date = [];
             for (var i in resp.val()) {
                 const d = resp.val()[i];
@@ -179,16 +181,25 @@ function HomeScreen({ route, navigation }) {
         const current_date = new Date();
         return "Today " + current_date.getDate().toString() + " " + MonthtoWord(current_date.getMonth()) + " " + current_date.getFullYear();
     }
+    const GoToDetail = (x, type) => {
+        if (type == "Missed" || type == "Upcoming") {
+            setModalVisible(false);
+            navigation.navigate('EditMedicine', {
+                user: user,
+                medicine: JSON.stringify(x)
+            })
+        }
 
+    }
     const TakeDose = (x) => {
-        console.log(x);
         const path = "/user/" + UserInfo.uid + "/" + x.Key;
         firebase.database()
             .ref(path)
             .update({
                 Active: false,
             })
-            .then(() => { GetReq; setModalVisible(false); });
+            .then(() => { GetReq();
+                 setModalVisible(false); });
     }
 
 
@@ -209,10 +220,9 @@ function HomeScreen({ route, navigation }) {
                             <Text style={styles.modalText}>{modalDetail.type}</Text>
                             {
                                 modalDetail.data && modalDetail.data.map(x =>
-                                    <View style={styles.RowView} key={x.key}>
+                                    <TouchableOpacity style={styles.RowView} key={x.key} onPress={() => { GoToDetail(x, modalDetail.type) }}>
                                         <View style={{ height: '100%', width: '20%', alignContent: 'center', justifyContent: 'center', alignItems: 'center' }}>
-                                           
-                                                <Image source={{uri: x.ImagePath}} style={{borderRadius:50, height:50, width:50}}/>
+                                            <Image source={{ uri: x.ImagePath }} style={{ borderRadius: 50, height: 50, width: 50 }} />
                                         </View>
                                         <View style={{ width: '50%', height: '100%', alignContent: 'flex-start', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
                                             <Text>{x.Name}</Text>
@@ -229,7 +239,7 @@ function HomeScreen({ route, navigation }) {
                                             </TouchableOpacity>
                                         }
 
-                                    </View>
+                                    </TouchableOpacity>
                                 )
                             }
 
