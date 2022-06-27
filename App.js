@@ -17,19 +17,21 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import CustomDrawerContent from "./Component/DrawerScreen";
 import GenerateReport from "./Navigation/GenerateReport";
 import EditMedicine from "./Navigation/EditMedicine";
+import FirstAidDetail from "./Navigation/FirstAidDetail";
+
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
 function Drawers() {
   return (
-    <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props}/>}>
+    <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />}>
       <Drawer.Screen name="Home" component={HomeScreen} options={{
         header: (props) => (
           <TopLeftNavigation navigation={props} title={"Medical 2R & First Aid"} />
         )
       }} />
-      
+
       <Drawer.Screen name='MedicineLog' component={MedicineLog} options={{
         header: (props) => (
           <TopLeftNavigation navigation={props} title={"Medical Log"} />
@@ -55,6 +57,22 @@ function Drawers() {
           <TopLeftNavigation navigation={props} title={"Reports"} />
         )
       }} />
+      <Drawer.Screen name='EditMedicine' component={EditMedicine} options={{
+          header: (props) => (
+            <TopLeftNavigation navigation={props} title={"Edit Reminder"} />
+          )
+        }} />
+        <Drawer.Screen name='FirstAidDetail' component={FirstAidDetail} options={{
+          header: (props) => (
+            <TopLeftNavigation navigation={props} title={"First Aid"} />
+          )
+        }} />
+
+        <Drawer.Screen name='AddMedicine' component={AddMedicine} options={{
+          header: (props) => (
+            <TopLeftNavigation navigation={props} title={"Add Reminder"} />
+          )
+        }} />
     </Drawer.Navigator>
   );
 }
@@ -67,12 +85,7 @@ function App() {
         <Stack.Screen name='SplashScreen' component={SplashScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name='CreateAccount' component={CreateAccount} options={{ headerShown: false }} />
-        <Stack.Screen name='EditMedicine' component={EditMedicine} options={{headerShown:false}}/>
-        <Stack.Screen name='AddMedicine' component={AddMedicine} options={{
-        header: (props) => (
-          <TopLeftNavigation navigation={props} title={"Add Reminder"} />
-        )
-      }} />
+        
         <Stack.Screen
           name="Main"
           component={Drawers}

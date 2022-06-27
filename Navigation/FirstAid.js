@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, ScrollView, Linking } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, ScrollView, Linking, Image, Touchable } from 'react-native';
 import auth, { firebase } from '@react-native-firebase/auth';
 import { ShowNormalAlert } from "../CommonFunction/Alert";
 import * as CommonMessage from "../CommonFunction/CommonString";
@@ -14,18 +14,16 @@ function FirstAid({ route, navigation }) {
     React.useEffect(() => {
         //https://oblador.github.io/react-native-vector-icons/
         const path = "/firstaid";
-        firebase.database().ref(path).once('value').then((resp) => {
+        firebase.database().ref(path).on('value', (resp) => {
             let data = [];
             for (var i in resp.val()) {
                 const d = resp.val()[i];
                 data.push({
-                    url: d.url,
-                    iconfamily: d.iconfamily,
-                    iconname: d.iconname,
-                    name: d.name
+                    title: d.Title,
+                    image_uri: d.image_uri,
+                    Details: d.Details
                 });
             }
-
             var second_list = [];
             for (var idx = 0; idx < data.length; idx = idx + 2) {
                 var list = [];
@@ -39,16 +37,26 @@ function FirstAid({ route, navigation }) {
                 second_list.push(list);
             }
             setimage(second_list);
-        }).catch((exp) => {
-            console.warn(exp);
-        })
+            console.log("Here");
+            console.log(second_list)
+        });
 
 
 
     }, []);
     const OnViewClicked = (url) => {
-        console.log(url);
-        Linking.openURL(url);
+        console.log("empty here ");
+        let all_param = [];
+        for(var i in url){
+            if(url[i]){
+                all_param.push(url[i]);
+            }
+        }
+        navigation.navigate('FirstAidDetail', {
+            user: user,
+            details: JSON.stringify(all_param)
+        })
+
     }
     return (
         <View style={styles.main_container}>
@@ -58,20 +66,15 @@ function FirstAid({ route, navigation }) {
                         <View style={styles.RowView}>
                             {
                                 x.map(y =>
-                                    <TouchableOpacity style={styles.Itemview} onPress={() => { OnViewClicked(y.url) }}>
-                                        <Icon
-                                            name={y.iconname}
-                                            type={y.iconfamily}
-                                            size={100} />
-                                        <Text style={styles.TextStyle}>{y.name}</Text>
+                                    <TouchableOpacity style={styles.Itemview} onPress={()=>{OnViewClicked(y.Details)}}>
+                                        <Image source={{uri : y.image_uri}} style={{height:100, width:100}}/>
                                     </TouchableOpacity>
-                                )
+                                    )
                             }
-
-                        </View>
-                    )
+                        </View>)
                 }
-
+                <View>
+                </View>
             </ScrollView>
             <BottomNavigationBar navigation={navigation} user={UserInfo} />
         </View>);
