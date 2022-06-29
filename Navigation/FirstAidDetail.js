@@ -52,6 +52,9 @@ function FirstAidDetail({ route, navigation }) {
                     renderContent={_renderContent}
                     onChange={_onchange}
                 />
+                <View style={{ height: 150 }}>
+
+                </View>
             </ScrollView>
             <BottomNavigationBar navigation={navigation} user={UserInfo} />
         </View>

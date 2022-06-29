@@ -254,8 +254,6 @@ function HomeScreen({ route, navigation }) {
                 </View>
             </Modal>
             <ScrollView style={{ width: '100%', height: '100%', alignContent: 'center' }}>
-
-
                 <Text style={styles.MedicationTitle}>{CommonString.default.Home.Medication}</Text>
                 <View style={[styles.DateTimeView, { alignSelf: 'center' }]}>
                     <Text style={styles.DateTimeText}>{GetDate()}</Text>
@@ -324,6 +322,9 @@ function HomeScreen({ route, navigation }) {
                         </TouchableOpacity>
                     </View>
                 </View>
+                <View style={{height:150}}>
+
+        </View>
             </ScrollView>
             <BottomNavigationBar navigation={navigation} user={UserInfo} />
         </View>

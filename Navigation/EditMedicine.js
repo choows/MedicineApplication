@@ -228,6 +228,9 @@ function EditMedicine({ route, navigation }) {
                 <TouchableOpacity style={styles.ButtonView} onPress={() => { AddNewReminder() }}>
                     <Text style={styles.ButtonText}>Update</Text>
                 </TouchableOpacity>
+                <View style={{height:150}}>
+
+        </View>
             </ScrollView>
             <BottomNavigationBar navigation={navigation} user={UserInfo} />
         </View>

@@ -91,8 +91,8 @@ function AddMedicine({ route, navigation }) {
       ShowNormalAlert("Unable To Add New Reminder", "Medicine Name Required");
       return;
     }
-    if(!image){
-      ShowNormalAlert("Unable To Add New Reminder" , "Image Required");
+    if (!image) {
+      ShowNormalAlert("Unable To Add New Reminder", "Image Required");
       return;
     }
     uploadImage(image).then((resp) => {
@@ -101,7 +101,7 @@ function AddMedicine({ route, navigation }) {
       console.log(resp);
     });
   }
-  const SetNotification=(date )=>{
+  const SetNotification = (date) => {
     PushNotification.localNotificationSchedule({
       channelId: "RN-Channel",
       //... You can use all the options from localNotifications
@@ -110,7 +110,7 @@ function AddMedicine({ route, navigation }) {
       subText: MedicineName,
       date: date, // in 60 secs
       allowWhileIdle: false, // (optional) set notification to work while on doze, default: false
-    
+
       /* Android Only Properties */
       repeatTime: 1, // (optional) Increment of configured repeatType. Check 'Repeating Notifications' section for more info.
     });
@@ -137,12 +137,12 @@ function AddMedicine({ route, navigation }) {
           };
           firebase.database().ref(path).push().set(JsonFormat).then((resp) => {
             ShowNormalAlert("New Reminder added", "Medicine Added");
-          }).then(()=>{
+          }).then(() => {
             mydate.setHours(myTime.getHours());
             mydate.setMinutes(myTime.getMinutes());
             mydate.setSeconds(myTime.getSeconds());
             SetNotification(mydate);
-          }).then(()=>{
+          }).then(() => {
             navigation.goBack();
           }).catch((exp) => {
             ShowNormalAlert("Unable To Add New Reminder", exp);
@@ -156,59 +156,62 @@ function AddMedicine({ route, navigation }) {
   };
   return (
     <View style={styles.container}>
-      <ScrollView style={{width:'100%' , alignContent:'center', paddingTop:40}}>
-      <View style={[styles.RowContainer, { marginBottom: 100 , alignSelf:'center'}]}>
-        <TouchableOpacity onPress={() => { selectImage() }}>
-          <Image
-            style={{ width: 150, height: 150, borderRadius: 100 , backgroundColor:'red'}}
-            source={{
-              uri: image,
-            }}
-          />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.RowContainer}>
-        <Text style={styles.Title}>Medication Name</Text>
-        <TextInput onChangeText={setMedicineName} style={styles.MediNameTextInput} value={MedicineName} />
-      </View>
-      <View style={styles.RowContainer}>
-        <Text style={styles.Title}>Date</Text>
-        <TouchableOpacity onPress={() => { setShow(true) }} style={styles.Touchable}>
-          <TextInput value={mydate.toDateString()} editable={false} style={styles.InnerTextInput} />
-          {isDisplayDate && (
-            <DateTimePicker
-              value={mydate}
-              mode={"date"}
-              is24Hour={true}
-              display="calendar"
-              onChange={(event, selectedDate) => { changeSelectedDate(event, selectedDate) }}
+      <ScrollView style={{ width: '100%', alignContent: 'center', paddingTop: 40 }}>
+        <View style={[styles.RowContainer, { marginBottom: 100, alignSelf: 'center' }]}>
+          <TouchableOpacity onPress={() => { selectImage() }}>
+            <Image
+              style={{ width: 150, height: 150, borderRadius: 100, backgroundColor: 'red' }}
+              source={{
+                uri: image,
+              }}
             />
-          )}
-        </TouchableOpacity>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.RowContainer}>
+          <Text style={styles.Title}>Medication Name</Text>
+          <TextInput onChangeText={setMedicineName} style={styles.MediNameTextInput} value={MedicineName} />
+        </View>
+        <View style={styles.RowContainer}>
+          <Text style={styles.Title}>Date</Text>
+          <TouchableOpacity onPress={() => { setShow(true) }} style={styles.Touchable}>
+            <TextInput value={mydate.toDateString()} editable={false} style={styles.InnerTextInput} />
+            {isDisplayDate && (
+              <DateTimePicker
+                value={mydate}
+                mode={"date"}
+                is24Hour={true}
+                display="calendar"
+                onChange={(event, selectedDate) => { changeSelectedDate(event, selectedDate) }}
+              />
+            )}
+          </TouchableOpacity>
 
-      </View>
-      <View style={styles.RowContainer}>
-        <Text style={styles.Title}>Time</Text>
-        <TouchableOpacity onPress={() => { setTimeShow(true) }} style={styles.Touchable}>
-          <TextInput value={myTime.toLocaleTimeString()} editable={false} style={styles.InnerTextInput} />
-          {isDisplayTime && (
-            <DateTimePicker
-              value={myTime}
-              mode={"time"}
-              is24Hour={true}
-              display="clock"
-              onChange={(event, selectedDate) => { changeSelectedTime(event, selectedDate) }}
-            />
-          )}
+        </View>
+        <View style={styles.RowContainer}>
+          <Text style={styles.Title}>Time</Text>
+          <TouchableOpacity onPress={() => { setTimeShow(true) }} style={styles.Touchable}>
+            <TextInput value={myTime.toLocaleTimeString()} editable={false} style={styles.InnerTextInput} />
+            {isDisplayTime && (
+              <DateTimePicker
+                value={myTime}
+                mode={"time"}
+                is24Hour={true}
+                display="clock"
+                onChange={(event, selectedDate) => { changeSelectedTime(event, selectedDate) }}
+              />
+            )}
+          </TouchableOpacity>
+        </View>
+        <View style={styles.RowContainer}>
+          <Text style={styles.Title}>Notes</Text>
+          <TextInput onChangeText={setNotes} style={styles.MediNameTextInput} value={Notes} />
+        </View>
+        <TouchableOpacity style={styles.ButtonView} onPress={() => { AddNewReminder() }}>
+          <Text style={styles.ButtonText}>Add New Reminder</Text>
         </TouchableOpacity>
-      </View>
-      <View style={styles.RowContainer}>
-        <Text style={styles.Title}>Notes</Text>
-        <TextInput onChangeText={setNotes} style={styles.MediNameTextInput} value={Notes} />
-      </View>
-      <TouchableOpacity style={styles.ButtonView} onPress={() => { AddNewReminder() }}>
-        <Text style={styles.ButtonText}>Add New Reminder</Text>
-      </TouchableOpacity>
+        <View style={{height:150}}>
+
+        </View>
       </ScrollView>
       <BottomNavigationBar navigation={navigation} user={UserInfo} />
     </View>
@@ -232,7 +235,7 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    alignSelf:'center'
+    alignSelf: 'center'
   },
   ButtonText: {
     fontWeight: 'bold'
@@ -246,7 +249,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     textAlignVertical: 'center',
     paddingHorizontal: 20,
-    alignSelf:'center'
+    alignSelf: 'center'
   },
   InnerTextInput: {
     height: '100%',

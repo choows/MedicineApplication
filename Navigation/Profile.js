@@ -53,7 +53,7 @@ function Profile({ route, navigation }) {
     }
     return (
         <View style={styles.container}>
-            <ScrollView style={{width:'100%' , height:'100%', alignContent:'center', paddingTop:30}}>
+            <ScrollView style={{ width: '100%', height: '100%', alignContent: 'center', paddingTop: 30 }}>
                 <Icon
                     name='person'
                     type='ionicons'
@@ -71,6 +71,9 @@ function Profile({ route, navigation }) {
                 <TouchableOpacity style={styles.SecondButtonView} onPress={() => { ChangePassword() }}>
                     <Text>{CommonString.default.UpdateProfile.ButtonText.ChangePassword}</Text>
                 </TouchableOpacity>
+                <View style={{ height: 150 }}>
+
+                </View>
             </ScrollView>
 
             <BottomNavigationBar navigation={navigation} user={UserInfo} />
@@ -93,7 +96,7 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         textAlign: 'center',
         marginTop: 15,
-        alignSelf:'center'
+        alignSelf: 'center'
     },
     ButtonView: {
         width: '80%',
@@ -103,7 +106,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         paddingVertical: 10,
         marginTop: 20,
-        alignSelf:'center'
+        alignSelf: 'center'
     },
     SecondButtonView: {
         width: '80%',
@@ -113,7 +116,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         paddingVertical: 10,
         marginTop: 20,
-        alignSelf:'center'
+        alignSelf: 'center'
     }
 });
 

@@ -23,7 +23,7 @@ function LoginScreen({ navigation }) {
   }, []);
 
   const ForgotPassword = () => {
-    console.log("Go To Forgot Password Page ");
+    navigation.navigate('ForgotPassword');
   }
 
   const CreateAccount = () => {
@@ -54,6 +54,8 @@ function LoginScreen({ navigation }) {
           })
         })
 
+      }else{
+        ShowNormalAlert(messsage.Failed.Title, "Email haven't registered");
       }
     }).catch((exp) => {
       console.warn(exp);

@@ -142,6 +142,9 @@ function GenerateReport({ route, navigation }) {
 
                     }
                 </View>
+                <View style={{height:150}}>
+
+        </View>
             </ScrollView>
             <BottomNavigationBar navigation={navigation} user={UserInfo} />
         </View>

@@ -18,7 +18,7 @@ import CustomDrawerContent from "./Component/DrawerScreen";
 import GenerateReport from "./Navigation/GenerateReport";
 import EditMedicine from "./Navigation/EditMedicine";
 import FirstAidDetail from "./Navigation/FirstAidDetail";
-
+import ForgotPassword from "./Navigation/ForgotPassword";
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -85,7 +85,7 @@ function App() {
         <Stack.Screen name='SplashScreen' component={SplashScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name='CreateAccount' component={CreateAccount} options={{ headerShown: false }} />
-        
+        <Stack.Screen name='ForgotPassword' component={ForgotPassword} options={{headerShown: false}}/>
         <Stack.Screen
           name="Main"
           component={Drawers}

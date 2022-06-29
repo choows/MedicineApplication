@@ -35,6 +35,7 @@ function CreateAccount({navigation}) {
             ShowNormalAlert(messsage.Success.Title);
             navigation.back();
         }).catch((exp)=>{
+            ShowNormalAlert(messsage.Failed.Title, "Email have registered");
             console.warn(exp)
         });
     }
@@ -48,6 +49,9 @@ function CreateAccount({navigation}) {
             <TextInput placeholder={CommonMessage.default.Form.PlaceHolder.ConfirmPassword} secureTextEntry={true} style={styles.PasswordInput} onChangeText={(text) => { setUserConfirmPassword(text) }} />
             <TouchableOpacity style={styles.LoginButton} onPress={Register}>
                 <Text style={styles.LoginText}>Register Now</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.BackButton} onPress={()=>{ navigation.back()}}>
+                <Text style={styles.LoginText}>Back To Login</Text>
             </TouchableOpacity>
         </View>
     )
@@ -79,6 +83,15 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         width: '80%',
         margin: 5
+    },
+    BackButton : {
+        backgroundColor: '#c4c49b',
+        borderRadius: 10,
+        padding: 15,
+        width: '80%',
+        textAlign: 'centre',
+        alignContent: 'center',
+        alignItems: 'center'
     },
     LoginButton: {
         backgroundColor: '#59FFB9',
