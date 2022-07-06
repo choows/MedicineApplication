@@ -101,16 +101,17 @@ function AddMedicine({ route, navigation }) {
       console.log(resp);
     });
   }
-  const SetNotification = (date) => {
+  const SetNotification = (date , k) => {
     PushNotification.localNotificationSchedule({
       channelId: "RN-Channel",
       //... You can use all the options from localNotifications
       message: "Time To Take Medicine", // (required)
-      bigText: "Hi, It is Time to take medicine", // (optional) default: "message" prop
-      subText: MedicineName,
+      bigText: "Hello, It's time to take " + MedicineName, // (optional) default: "message" prop
+      subText: k,
+      invokeApp:false,
       date: date, // in 60 secs
       allowWhileIdle: false, // (optional) set notification to work while on doze, default: false
-
+      actions: ["Dismiss" , "Snooze", "Take"],
       /* Android Only Properties */
       repeatTime: 1, // (optional) Increment of configured repeatType. Check 'Repeating Notifications' section for more info.
     });
@@ -135,13 +136,16 @@ function AddMedicine({ route, navigation }) {
             Active: true,
             ImagePath: res
           };
-          firebase.database().ref(path).push().set(JsonFormat).then((resp) => {
+          var k = path + "/" + firebase.database().ref(path).push().key;
+          firebase.database().ref(k).set(JsonFormat).then((resp) => {
             ShowNormalAlert("New Reminder added", "Medicine Added");
+            console.log(k);
+            
           }).then(() => {
             mydate.setHours(myTime.getHours());
             mydate.setMinutes(myTime.getMinutes());
             mydate.setSeconds(myTime.getSeconds());
-            SetNotification(mydate);
+            SetNotification(mydate , k);
           }).then(() => {
             navigation.goBack();
           }).catch((exp) => {

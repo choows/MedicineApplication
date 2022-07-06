@@ -100,16 +100,17 @@ function EditMedicine({ route, navigation }) {
             console.log(resp);
         });
     }
-    const SetNotification = (date) => {
+    const SetNotification = (date, path) => {
         PushNotification.localNotificationSchedule({
             channelId: "RN-Channel",
             //... You can use all the options from localNotifications
             message: "Time To Take Medicine", // (required)
-            bigText: "Hi, It is Time to take medicine", // (optional) default: "message" prop
-            subText: MedicineName,
+            bigText: "Hi, It is Time to take medicine " + MedicineName, // (optional) default: "message" prop
+            subText: path,
             date: date, // in 60 secs
             allowWhileIdle: false, // (optional) set notification to work while on doze, default: false
-
+            actions:["Dismiss" , "Snooze", "Take"],
+            invokeApp:false,
             /* Android Only Properties */
             repeatTime: 1, // (optional) Increment of configured repeatType. Check 'Repeating Notifications' section for more info.
         });
@@ -138,7 +139,7 @@ function EditMedicine({ route, navigation }) {
                             mydate.setHours(myTime.getHours());
                             mydate.setMinutes(myTime.getMinutes());
                             mydate.setSeconds(myTime.getSeconds());
-                            SetNotification(mydate);
+                            SetNotification(mydate , path);
                         }).then(() => {
                              navigation.goBack();
                         }).catch((exp) => {
@@ -163,7 +164,7 @@ function EditMedicine({ route, navigation }) {
                 mydate.setHours(myTime.getHours());
                 mydate.setMinutes(myTime.getMinutes());
                 mydate.setSeconds(myTime.getSeconds());
-                SetNotification(mydate);
+                SetNotification(mydate , path);
             }).then(() => {
                  navigation.goBack();
             }).catch((exp) => {

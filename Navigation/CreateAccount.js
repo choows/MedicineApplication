@@ -1,40 +1,40 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity  , Alert} from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
 import auth, { firebase } from '@react-native-firebase/auth';
-import {ShowNormalAlert} from "../CommonFunction/Alert";
+import { ShowNormalAlert } from "../CommonFunction/Alert";
 import * as CommonMessage from "../CommonFunction/CommonString";
 // const authForDefaultApp = firebase.auth();
-function CreateAccount({navigation}) {
+function CreateAccount({ navigation }) {
     const [UserEmail, setUserEmail] = React.useState('');
     const [UserPassword, setUserPassword] = React.useState('');
-    const [UserConfirmPassword , setUserConfirmPassword] = React.useState('');
+    const [UserConfirmPassword, setUserConfirmPassword] = React.useState('');
 
     const Register = () => {
         const messsage = CommonMessage.default.Registration;
-        if(!UserEmail){
+        if (!UserEmail) {
             ShowNormalAlert(messsage.Failed.Title, messsage.Failed.EmailRequired);
             return;
         }
-        if(!UserPassword){
+        if (!UserPassword) {
             ShowNormalAlert(messsage.Failed.Title, messsage.Failed.PasswordRequired);
             return;
         }
-        if(UserPassword.length < 6){
+        if (UserPassword.length < 6) {
             ShowNormalAlert(messsage.Failed.Title, messsage.Failed.PasswordMin);
             return;
         }
-        if(!UserConfirmPassword){
+        if (!UserConfirmPassword) {
             ShowNormalAlert(messsage.Failed.Title, messsage.Failed.ConfirmPasswordRequired);
             return;
         }
-        if(UserPassword != UserConfirmPassword){
+        if (UserPassword != UserConfirmPassword) {
             ShowNormalAlert(messsage.Failed.Title, messsage.Failed.UnmatchPassword);
             return;
         }
-        firebase.auth().createUserWithEmailAndPassword(UserEmail , UserPassword).then((resp)=>{
+        firebase.auth().createUserWithEmailAndPassword(UserEmail, UserPassword).then((resp) => {
             ShowNormalAlert(messsage.Success.Title);
             navigation.back();
-        }).catch((exp)=>{
+        }).catch((exp) => {
             ShowNormalAlert(messsage.Failed.Title, "Email have registered");
             console.warn(exp)
         });
@@ -50,9 +50,15 @@ function CreateAccount({navigation}) {
             <TouchableOpacity style={styles.LoginButton} onPress={Register}>
                 <Text style={styles.LoginText}>Register Now</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.BackButton} onPress={()=>{ navigation.back()}}>
-                <Text style={styles.LoginText}>Back To Login</Text>
-            </TouchableOpacity>
+            <View style={styles.ForgotPasswordView}>
+                <TouchableOpacity style={styles.Col} onPress={() => {navigation.navigate('Login') }}>
+                    <Text style={styles.ForgorPasswordtex}>{"Back To Login"}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.Col}>
+                    {/* <Text style={styles.ForgorPasswordtex} onPress={CreateAccount}>{CommonMessage.default.Login.CreateAccount}</Text> */}
+                </TouchableOpacity>
+            </View>
+           
         </View>
     )
 }
@@ -67,7 +73,7 @@ const styles = StyleSheet.create({
     Title: {
         fontSize: 30,
         color: 'black',
-        margin:20
+        margin: 20
     },
     EmailInput: {
         borderColor: 'blue',
@@ -84,7 +90,7 @@ const styles = StyleSheet.create({
         width: '80%',
         margin: 5
     },
-    BackButton : {
+    BackButton: {
         backgroundColor: '#c4c49b',
         borderRadius: 10,
         padding: 15,

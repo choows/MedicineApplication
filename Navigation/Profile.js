@@ -21,7 +21,6 @@ function Profile({ route, navigation }) {
         const update = {
             displayName: displayName
         };
-        console.log(firebase.auth().currentUser);
         firebase.auth().currentUser.updateProfile(update).then(() => {
             ShowNormalAlert("Profile Update", "Successed!");
         }).catch((exp) => {
@@ -37,20 +36,20 @@ function Profile({ route, navigation }) {
             ShowNormalAlert(CommonString.default.UpdateProfile.ChangePassword.Failed, CommonString.default.UpdateProfile.ChangePassword.FailedReason.Unmatch);
             return;
         }
-        const emailCred = firebase.auth.EmailAuthProvider.credential(
-            firebase.auth().currentUser, oldPassword);
-        firebase.auth().currentUser.reauthenticateWithCredential(emailCred)
-            .then(() => {
-                return firebase.auth().currentUser.updatePassword(newPassword).then(() => {
-                    ShowNormalAlert("", CommonString.default.UpdateProfile.ChangePassword.Success);
-                });
+        const emailCred = firebase.auth.EmailAuthProvider.credential( firebase.auth().currentUser.email, oldPassword);
 
+        firebase.auth().currentUser.reauthenticateWithCredential(emailCred)
+            .then((x) => {
+                return firebase.auth().currentUser.updatePassword(newPassword).then(() => {
+                    ShowNormalAlert("asd", CommonString.default.UpdateProfile.ChangePassword.Success);
+                });
             })
             .catch(error => {
                 // Handle error.
                 ShowNormalAlert(CommonString.default.UpdateProfile.ChangePassword.Failed, error);
             });
     }
+    
     return (
         <View style={styles.container}>
             <ScrollView style={{ width: '100%', height: '100%', alignContent: 'center', paddingTop: 30 }}>
@@ -64,9 +63,9 @@ function Profile({ route, navigation }) {
                     <Text>{CommonString.default.UpdateProfile.ButtonText.UpdateProfile}</Text>
                 </TouchableOpacity>
 
-                <TextInput style={styles.TextInputStyle} value={oldPassword} onChangeText={setOldPassword} placeholder={CommonString.default.Form.PlaceHolder.OldPassword} />
-                <TextInput style={styles.TextInputStyle} value={newPassword} onChangeText={setnewPassword} placeholder={CommonString.default.Form.PlaceHolder.NewPassword} />
-                <TextInput style={styles.TextInputStyle} value={confirmNewPassword} onChangeText={setConfirmNewPassword} placeholder={CommonString.default.Form.PlaceHolder.ConfirmPassword} />
+                <TextInput style={styles.TextInputStyle} value={oldPassword} secureTextEntry={true} onChangeText={setOldPassword} placeholder={CommonString.default.Form.PlaceHolder.OldPassword} />
+                <TextInput style={styles.TextInputStyle} value={newPassword} secureTextEntry={true} onChangeText={setnewPassword} placeholder={CommonString.default.Form.PlaceHolder.NewPassword} />
+                <TextInput style={styles.TextInputStyle} value={confirmNewPassword} secureTextEntry={true} onChangeText={setConfirmNewPassword} placeholder={CommonString.default.Form.PlaceHolder.ConfirmPassword} />
 
                 <TouchableOpacity style={styles.SecondButtonView} onPress={() => { ChangePassword() }}>
                     <Text>{CommonString.default.UpdateProfile.ButtonText.ChangePassword}</Text>

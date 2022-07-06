@@ -40,7 +40,6 @@ function GenerateReport({ route, navigation }) {
         selected_start_date.setMonth(fromdate.getMonth());
         selected_start_date.setFullYear(fromdate.getFullYear());
         while (selected_start_date.getTime() <= todate.getTime()) {
-            console.log("Marked", selected_start_date.toDateString());
             DayArray.push(selected_start_date.toDateString());
             selected_start_date.setDate(selected_start_date.getDate() + 1);
         }
@@ -62,6 +61,12 @@ function GenerateReport({ route, navigation }) {
                     });
                 }
             }
+            this_date.sort(function (a, b){
+                let date_detail = new Date(a.Date);
+                let date_detail2 = new Date(b.Date);
+                return date_detail - date_detail2;
+            });
+           
             setReportDate(this_date);
         }).catch((exp) => {
             console.warn(exp);
