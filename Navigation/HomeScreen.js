@@ -5,7 +5,7 @@ import BottomNavigationBar from "../Component/BottomNavigationBar";
 import { firebase } from '@react-native-firebase/database';
 import PieChart from 'react-native-pie-chart';
 import * as CommonString from "../CommonFunction/CommonString";
-
+import PushNotification from "react-native-push-notification";
 
 function HomeScreen({ route, navigation }) {
     const { user } = route.params;
@@ -20,7 +20,7 @@ function HomeScreen({ route, navigation }) {
     const [PieData, setPieData] = React.useState([0, 0, 0, 0]);
     const [ShowPie, setShowPie] = React.useState(false);
 
-
+    
     React.useEffect(() => {
         
         GetReq();

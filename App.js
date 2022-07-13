@@ -19,6 +19,7 @@ import GenerateReport from "./Navigation/GenerateReport";
 import EditMedicine from "./Navigation/EditMedicine";
 import FirstAidDetail from "./Navigation/FirstAidDetail";
 import ForgotPassword from "./Navigation/ForgotPassword";
+import ViewMedicine from './Navigation/ViewMedicine';
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -58,21 +59,28 @@ function Drawers() {
         )
       }} />
       <Drawer.Screen name='EditMedicine' component={EditMedicine} options={{
-          header: (props) => (
-            <TopLeftNavigation navigation={props} title={"Edit Reminder"} />
-          )
-        }} />
-        <Drawer.Screen name='FirstAidDetail' component={FirstAidDetail} options={{
-          header: (props) => (
-            <TopLeftNavigation navigation={props} title={"First Aid"} />
-          )
-        }} />
+        header: (props) => (
+          <TopLeftNavigation navigation={props} title={"Edit Reminder"} />
+        )
+      }} />
+      <Drawer.Screen name='FirstAidDetail' component={FirstAidDetail} options={{
+        header: (props) => (
+          <TopLeftNavigation navigation={props} title={"First Aid"} />
+        )
+      }} />
 
-        <Drawer.Screen name='AddMedicine' component={AddMedicine} options={{
-          header: (props) => (
-            <TopLeftNavigation navigation={props} title={"Add Reminder"} />
-          )
-        }} />
+      <Drawer.Screen name='AddMedicine' component={AddMedicine} options={{
+        header: (props) => (
+          <TopLeftNavigation navigation={props} title={"Add Reminder"} />
+        )
+      }} />
+
+      <Drawer.Screen name='ViewMedicine' component={ViewMedicine} options={{
+        header: (props) => (
+          <TopLeftNavigation navigation={props} title={"View Medicine"} />
+        )
+      }} />
+
     </Drawer.Navigator>
   );
 }
@@ -85,7 +93,7 @@ function App() {
         <Stack.Screen name='SplashScreen' component={SplashScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name='CreateAccount' component={CreateAccount} options={{ headerShown: false }} />
-        <Stack.Screen name='ForgotPassword' component={ForgotPassword} options={{headerShown: false}}/>
+        <Stack.Screen name='ForgotPassword' component={ForgotPassword} options={{ headerShown: false }} />
         <Stack.Screen
           name="Main"
           component={Drawers}

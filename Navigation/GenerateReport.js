@@ -63,10 +63,21 @@ function GenerateReport({ route, navigation }) {
             }
             this_date.sort(function (a, b){
                 let date_detail = new Date(a.Date);
+                let Timestr_detail = a.Time.split(":");
+                let Timestr_detail_2 = b.Time.split(":");
+
+                date_detail.setHours(Timestr_detail[0]);
+                date_detail.setMinutes(Timestr_detail[1]);
+                date_detail.setSeconds(Timestr_detail[2]);
+
                 let date_detail2 = new Date(b.Date);
+                date_detail2.setHours(Timestr_detail_2[0]);
+                date_detail2.setMinutes(Timestr_detail_2[1]);
+                date_detail2.setSeconds(Timestr_detail_2[2]);
+
                 return date_detail - date_detail2;
             });
-           
+            
             setReportDate(this_date);
         }).catch((exp) => {
             console.warn(exp);

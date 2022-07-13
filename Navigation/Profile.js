@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Image, PermissionsAndroid } from 'react-native';
 import auth, { firebase } from '@react-native-firebase/auth';
 import { ShowNormalAlert } from "../CommonFunction/Alert";
 import BottomNavigationBar from "../Component/BottomNavigationBar";
 import { Icon } from "@rneui/themed";
 import * as CommonString from "../CommonFunction/CommonString";
 import { ScrollView } from 'react-native-gesture-handler';
+import * as ImagePicker from 'react-native-image-picker';
 
 function Profile({ route, navigation }) {
     const { user } = route.params;
@@ -15,10 +16,90 @@ function Profile({ route, navigation }) {
     const [oldPassword, setOldPassword] = React.useState('');
     const [newPassword, setnewPassword] = React.useState('');
     const [confirmNewPassword, setConfirmNewPassword] = React.useState('');
+    const [image, setImage] = React.useState(null);
+    const [uploading, setUploading] = React.useState(false);
+    React.useEffect(() => {
+        RequestPermission();
+    }, []);
+    const RequestPermission = () => {
+        try {
+            const granted = PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.CAMERA,
+                {
+                    title: "Camera Permission",
+                    message:
+                        "Medical2R needs access to your camera ",
+                    buttonNeutral: "Ask Me Later",
+                    buttonNegative: "Cancel",
+                    buttonPositive: "OK"
+                }
+            );
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                //selectFile();
+            }
+        } catch (err) {
+            console.warn(err);
+        }
+    }
+    const selectImage = () => {
+        const options = {
+            maxWidth: 2000,
+            maxHeight: 2000,
+            storageOptions: {
+                skipBackup: true,
+                path: 'images'
+            }
+        };
+        ImagePicker.launchCamera(options, response => {
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
+                const source = { uri: response.assets.pop()?.uri };
+                setImage(source.uri);
+                // uploadImage(source.uri);
+            }
+        });
+    };
+
+    const uploadImage = async (image_uri) => {
+        const uri = image_uri;
+        console.log("image uri : " + image_uri);
+        const filename = uri.substring(uri.lastIndexOf('/') + 1);
+        const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+        setUploading(true);
+        firebase.storage()
+            .ref(filename)
+            .putFile(uploadUri).then((resp) => {
+                firebase.storage().ref(resp.metadata.fullPath).getDownloadURL().then((res) => {
+                    console.log(res);
+                    let update = {
+                        displayName: displayName,
+                        photoURL : res
+                    };
+
+                    firebase.auth().currentUser.updateProfile(update).then(() => {
+                        ShowNormalAlert("Profile Update", "Successed!");
+                    }).catch((exp) => {
+                        console.log(exp);
+                    })
+                }).catch((exp) => {
+                    ShowNormalAlert("Unable To Update Profile", exp);
+                });
+            });
+        return result;
 
 
+    };
     const updateProfile = () => {
-        const update = {
+        if (image) {
+            uploadImage(image);
+            return;
+        }
+        let update = {
             displayName: displayName
         };
         firebase.auth().currentUser.updateProfile(update).then(() => {
@@ -36,12 +117,12 @@ function Profile({ route, navigation }) {
             ShowNormalAlert(CommonString.default.UpdateProfile.ChangePassword.Failed, CommonString.default.UpdateProfile.ChangePassword.FailedReason.Unmatch);
             return;
         }
-        const emailCred = firebase.auth.EmailAuthProvider.credential( firebase.auth().currentUser.email, oldPassword);
+        const emailCred = firebase.auth.EmailAuthProvider.credential(firebase.auth().currentUser.email, oldPassword);
 
         firebase.auth().currentUser.reauthenticateWithCredential(emailCred)
             .then((x) => {
                 return firebase.auth().currentUser.updatePassword(newPassword).then(() => {
-                    ShowNormalAlert("asd", CommonString.default.UpdateProfile.ChangePassword.Success);
+                    ShowNormalAlert("", CommonString.default.UpdateProfile.ChangePassword.Success);
                 });
             })
             .catch(error => {
@@ -49,14 +130,28 @@ function Profile({ route, navigation }) {
                 ShowNormalAlert(CommonString.default.UpdateProfile.ChangePassword.Failed, error);
             });
     }
-    
+
     return (
         <View style={styles.container}>
             <ScrollView style={{ width: '100%', height: '100%', alignContent: 'center', paddingTop: 30 }}>
-                <Icon
-                    name='person'
-                    type='ionicons'
-                    size={80} />
+                <TouchableOpacity onPress={() => { selectImage() }} style={{ alignSelf: 'center' }}>
+                    {UserInfo.photoURL || image ?
+                        <Image
+                            style={{ width: 100, height: 100, borderRadius: 100, backgroundColor: 'red' }}
+                            source={{
+                                uri: image ? image : UserInfo.photoURL,
+                            }}
+                        />
+                        :
+
+                        <Icon
+                            name='person'
+                            type='ionicons'
+                            size={80} />
+                    }
+
+                </TouchableOpacity>
+
                 <TextInput style={styles.TextInputStyle} value={email} onChangeText={setEmail} placeholder={CommonString.default.Form.PlaceHolder.Email} />
                 <TextInput style={styles.TextInputStyle} value={displayName} onChangeText={setDisplayName} placeholder={CommonString.default.Form.PlaceHolder.DisplayName} />
                 <TouchableOpacity style={styles.ButtonView} onPress={() => { updateProfile() }}>

@@ -12,10 +12,10 @@ function FirstAid({ route, navigation }) {
     const [image, setimage] = React.useState([]);
 
     React.useEffect(() => {
-        //https://oblador.github.io/react-native-vector-icons/
         const path = "/firstaid";
         firebase.database().ref(path).on('value', (resp) => {
             let data = [];
+            
             for (var i in resp.val()) {
                 const d = resp.val()[i];
                 data.push({
@@ -25,9 +25,11 @@ function FirstAid({ route, navigation }) {
                 });
             }
             var second_list = [];
-            for (var idx = 0; idx < data.length; idx = idx + 2) {
+            for (var idx = 0; idx < data.length; idx = idx + 3) {
                 var list = [];
-                list.push(data[idx]);
+                if(idx < data.length){
+                    list.push(data[idx]);
+                }
                 if ((idx + 1) < data.length) {
                     list.push(data[idx + 1]);
                 }
@@ -37,15 +39,10 @@ function FirstAid({ route, navigation }) {
                 second_list.push(list);
             }
             setimage(second_list);
-            console.log("Here");
-            console.log(second_list)
         });
-
-
 
     }, []);
     const OnViewClicked = (url) => {
-        console.log("empty here ");
         let all_param = [];
         for(var i in url){
             if(url[i]){
@@ -73,8 +70,9 @@ function FirstAid({ route, navigation }) {
                             }
                         </View>)
                 }
-                <View>
-                </View>
+                <View style={{ height: 150 }}>
+
+</View>
             </ScrollView>
             <BottomNavigationBar navigation={navigation} user={UserInfo} />
         </View>);

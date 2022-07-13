@@ -95,6 +95,10 @@ function AddMedicine({ route, navigation }) {
       ShowNormalAlert("Unable To Add New Reminder", "Image Required");
       return;
     }
+    if(mydate <= new Date()){
+      ShowNormalAlert("Unable To Add New Reminder", "Incorrect Date");
+      return;
+    }
     uploadImage(image).then((resp) => {
       console.log("Uploaded");
     }).then((resp) => {

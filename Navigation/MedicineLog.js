@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Touchable , ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Touchable, ScrollView } from 'react-native';
 import { firebase } from '@react-native-firebase/database';
 import { ShowNormalAlert } from "../CommonFunction/Alert";
 import * as CommonMessage from "../CommonFunction/CommonString";
@@ -77,6 +77,22 @@ function MedicineLog({ route, navigation }) {
                     });
                 }
             }
+            this_date.sort(function (a, b) {
+                let date_detail = new Date(a.Date);
+                let Timestr_detail = a.Time.split(":");
+                let Timestr_detail_2 = b.Time.split(":");
+
+                date_detail.setHours(Timestr_detail[0]);
+                date_detail.setMinutes(Timestr_detail[1]);
+                date_detail.setSeconds(Timestr_detail[2]);
+
+                let date_detail2 = new Date(b.Date);
+                date_detail2.setHours(Timestr_detail_2[0]);
+                date_detail2.setMinutes(Timestr_detail_2[1]);
+                date_detail2.setSeconds(Timestr_detail_2[2]);
+
+                return date_detail - date_detail2;
+            });
             setdata(this_date);
         }).catch((exp) => {
             console.warn(exp);
@@ -123,6 +139,9 @@ function MedicineLog({ route, navigation }) {
                     ) :
                         <Text>{CommonMessage.default.MediLog.NoRecord}</Text>
                 }
+                <View style={{ height: 500 }}>
+
+                </View>
             </ScrollView>
             <BottomNavigationBar navigation={navigation} user={UserInfo} />
         </View>
@@ -136,20 +155,20 @@ const styles = StyleSheet.create({
         width: '100%',
         backgroundColor: '#FFEACA'
     },
-    TimeView:{
-        fontSize:25,
-        fontWeight:'bold'
+    TimeView: {
+        fontSize: 25,
+        fontWeight: 'bold'
     },
-    NormalText:{
-        fontWeight:'600',
-        margin:5
+    NormalText: {
+        fontWeight: '600',
+        margin: 5
     },
-    RightSubView:{
+    RightSubView: {
         width: '50%',
         height: '100%',
         padding: 10,
-        borderLeftWidth:3,
-        borderLeftColor:'black'
+        borderLeftWidth: 3,
+        borderLeftColor: 'black'
     },
     Subview: {
         width: '50%',

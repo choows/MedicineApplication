@@ -18,8 +18,8 @@ export default function CustomDrawerContent(props) {
             }
         )
     }
-    const Logout=()=>{
-        AsyncStorage.clear(()=>{
+    const Logout = () => {
+        AsyncStorage.clear(() => {
             props.navigation.navigate(
                 'Login'
             )
@@ -29,50 +29,61 @@ export default function CustomDrawerContent(props) {
         <DrawerContentScrollView {...props} style={{ height: '100%', width: '100%' }}>
             <TouchableOpacity style={styles.upper} onPress={() => { Navigate('Profile') }}>
                 <View style={styles.iconView}>
-                    <Icon
-                        name='person'
-                        type='ionicons'
-                        size={50} />
+                    {
+                        UserInfo.photoURL ?
+                            <Image
+                                style={{ width: 50, height: 50, borderRadius: 100, backgroundColor: 'red' }}
+                                source={{
+                                    uri: UserInfo.photoURL,
+                                }}
+                            />
+                            :
+                            <Icon
+                                name='person'
+                                type='ionicons'
+                                size={50} />
+                    }
+
                 </View>
                 <View style={{ height: '100%', width: '80%', padding: 20, alignContent: 'flex-start', alignItems: 'flex-start', justifyContent: 'center' }}>
                     <Text style={{ fontWeight: 'bold' }}>{"Hello, " + UserInfo.displayName + " !"}</Text>
                     <Text>{UserInfo.email}</Text>
                 </View>
             </TouchableOpacity>
-            <ScrollView style={{ width: '100%', minHeight:500 }}>
-                <TouchableOpacity style={{ width: '100%', flexDirection: 'row', height:80, padding:10}} onPress={()=>{Navigate('MedicineLog')}}>
+            <ScrollView style={{ width: '100%', minHeight: 500 }}>
+                <TouchableOpacity style={{ width: '100%', flexDirection: 'row', height: 80, padding: 10 }} onPress={() => { Navigate('MedicineLog') }}>
                     <Icon
                         name='ios-document'
-                        type='ionicon' 
+                        type='ionicon'
                         size={30}
-                        style={{margin:10}}/>
-                    <Text style={{fontSize:20 , fontWeight:'600', marginLeft:20, margin:10}}>Medicine Log</Text>
+                        style={{ margin: 10 }} />
+                    <Text style={{ fontSize: 20, fontWeight: '600', marginLeft: 20, margin: 10 }}>Medicine Log</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{ width: '100%', flexDirection: 'row', height:80, padding:10}} onPress={()=>{Navigate('FirstAid')}}>
+                <TouchableOpacity style={{ width: '100%', flexDirection: 'row', height: 80, padding: 10 }} onPress={() => { Navigate('FirstAid') }}>
                     <Icon
                         name='medkit'
-                        type='font-awesome' 
+                        type='font-awesome'
                         size={30}
-                        style={{margin:10}}/>
-                    <Text style={{fontSize:20 , fontWeight:'600', marginLeft:20, margin:10}}>First Aid</Text>
+                        style={{ margin: 10 }} />
+                    <Text style={{ fontSize: 20, fontWeight: '600', marginLeft: 20, margin: 10 }}>First Aid</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{ width: '100%', flexDirection: 'row', height:80, padding:10}} onPress={()=>{Navigate('EmegencyContact')}}>
+                <TouchableOpacity style={{ width: '100%', flexDirection: 'row', height: 80, padding: 10 }} onPress={() => { Navigate('EmegencyContact') }}>
                     <Icon
                         name='phone'
-                        type='materialicons' 
+                        type='materialicons'
                         size={30}
-                        style={{margin:10}}/>
-                    <Text style={{fontSize:20 , fontWeight:'600', marginLeft:20, margin:10}}>Emergency Contact</Text>
+                        style={{ margin: 10 }} />
+                    <Text style={{ fontSize: 20, fontWeight: '600', marginLeft: 20, margin: 10 }}>Emergency Contact</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{ width: '100%', flexDirection: 'row', height:80, padding:10}} onPress={()=>{Navigate('GenerateReport')}}>
+                <TouchableOpacity style={{ width: '100%', flexDirection: 'row', height: 80, padding: 10 }} onPress={() => { Navigate('GenerateReport') }}>
                     <Icon
                         name='document'
-                        type='ionicon' 
+                        type='ionicon'
                         size={30}
-                        style={{margin:10}}/>
-                    <Text style={{fontSize:20 , fontWeight:'600', marginLeft:20, margin:10}}>Reports</Text>
+                        style={{ margin: 10 }} />
+                    <Text style={{ fontSize: 20, fontWeight: '600', marginLeft: 20, margin: 10 }}>Reports</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={Logout} style={{marginTop:300, padding:20 ,bottom:0, margin:5 , backgroundColor:'#e09792' , justifyContent:'center' , alignContent:'center', alignItems:'center'}}>
+                <TouchableOpacity onPress={Logout} style={{ marginTop: 300, padding: 20, bottom: 0, margin: 5, backgroundColor: '#e09792', justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
                     <Text>Log out</Text>
                 </TouchableOpacity>
             </ScrollView>

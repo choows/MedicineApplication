@@ -43,7 +43,6 @@ function LoginScreen({ navigation }) {
   const SignIn = (Email, Password) => {
     auth().signInWithEmailAndPassword(Email, Password).then((resp) => {
       if (resp.user) {
-
         AsyncStorage.setItem(CommonString.StorageKey.UserCredential, JSON.stringify({
           Email: Email,
           Password: Password
@@ -52,12 +51,14 @@ function LoginScreen({ navigation }) {
             screen: 'Home',
             params: {  user: JSON.stringify(resp.user) },
           })
-        })
-
+        }).catch((exp)=>{
+          ShowNormalAlert(CommonMessage.default.Login.Failed.Title, "Email haven't registered");
+        });
       }else{
-        ShowNormalAlert(messsage.Failed.Title, "Email haven't registered");
+        ShowNormalAlert(CommonMessage.default.Login.Failed.Title, "Email haven't registered");
       }
     }).catch((exp) => {
+      ShowNormalAlert(CommonMessage.default.Login.Failed.Title, "Email haven't registered");
       console.warn(exp);
     })
   }

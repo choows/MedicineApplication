@@ -7,6 +7,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import BottomNavigationBar from "../Component/BottomNavigationBar";
 import { Icon } from "@rneui/themed";
 import Accordion from 'react-native-collapsible/Accordion';
+import Video from 'react-native-video';
+import * as videoList from "../Videos/video_list";
 
 
 function FirstAidDetail({ route, navigation }) {
@@ -16,7 +18,7 @@ function FirstAidDetail({ route, navigation }) {
     const [activeSection, setActiveSection] = React.useState([0]);
     React.useEffect(() => {
         //changeDate(0);
-        console.log(detail);
+        // console.log(detail[0].Video);
     }, []);
     const _renderHeader = (section) => {
         return (
@@ -31,6 +33,12 @@ function FirstAidDetail({ route, navigation }) {
     const _renderContent = (section) => {
         return (
             <View style={styles.content}>
+                {
+                    section.Video &&
+                    <View style={{ height: 250, width: '100%', padding: 10 }}>
+                        <Video controls={true} source={{ uri: section.Video}} style={{ width: '100%', height: '100%'}} resizeMode={"stretch"}/>
+                    </View>
+                }
                 {
                     section.Subtitle.split("\\n").map(x =>
                         <Text style={{ padding: 15, fontSize: 15 }} key={x}>
