@@ -116,7 +116,7 @@ function GenerateReport({ route, navigation }) {
                         <Text style={{ color: 'white' }}>{CommonMessage.default.GenerateReport.Title}</Text>
                     </TouchableOpacity>
                 </View>
-                <View style={[styles.DatetimePickerView, {flexDirection:'column', alignContent: 'center', justifyContent: 'center', alignItems: 'center' }]}>
+                <View style={[styles.DatetimePickerView, {padding: 0,flexDirection:'column', alignContent: 'center', justifyContent: 'center', alignItems: 'center' }]}>
                     {
                         ReportDate.length> 0 && (
                             <>

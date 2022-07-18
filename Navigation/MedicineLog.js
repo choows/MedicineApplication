@@ -139,7 +139,7 @@ function MedicineLog({ route, navigation }) {
                     ) :
                         <Text>{CommonMessage.default.MediLog.NoRecord}</Text>
                 }
-                <View style={{ height: 500 }}>
+                <View style={{ height: 1000 }}>
 
                 </View>
             </ScrollView>

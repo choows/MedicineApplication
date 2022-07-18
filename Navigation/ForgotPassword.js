@@ -6,8 +6,6 @@ import CommonString, * as CommonMessage from "../CommonFunction/CommonString";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function ForgotPassword({ navigation }) {
-
-
     const [UserEmail, setUserEmail] = React.useState('');
     const [ConfirmEmail, setConfirmEmail] = React.useState('');
 
@@ -40,7 +38,6 @@ function ForgotPassword({ navigation }) {
             <TouchableOpacity style={styles.LoginButton} onPress={Reset}>
                 <Text style={styles.LoginText}>Reset Password</Text>
             </TouchableOpacity>
-
         </View>
     );
 }
@@ -57,7 +54,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 10,
         paddingHorizontal: 20,
-        width: '80%'
+        width: '80%',
+        marginTop:15
     },
     PasswordInput: {
         borderColor: 'blue',
@@ -65,7 +63,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingHorizontal: 20,
         width: '80%',
-        margin: 5
+        margin: 5,
+        marginTop:15
     },
     LoginButton: {
         backgroundColor: '#59FFB9',
@@ -74,7 +73,8 @@ const styles = StyleSheet.create({
         width: '80%',
         textAlign: 'centre',
         alignContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop:15
     },
     LoginText: {
         fontSize: 20,

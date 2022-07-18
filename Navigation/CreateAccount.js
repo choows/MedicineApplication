@@ -88,7 +88,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingHorizontal: 20,
         width: '80%',
-        margin: 5
+        margin: 5,
+        marginTop:15
     },
     BackButton: {
         backgroundColor: '#c4c49b',

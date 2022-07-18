@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image } from 'react-native';
 import auth, { firebase } from '@react-native-firebase/auth';
 import { ShowNormalAlert } from "../CommonFunction/Alert";
 import CommonString, * as CommonMessage from "../CommonFunction/CommonString";
@@ -13,12 +13,12 @@ function LoginScreen({ navigation }) {
 
   React.useEffect(() => {
     AsyncStorage.getItem(CommonString.StorageKey.UserCredential).then((resp) => {
-      if(resp){
+      if (resp) {
         var credential = JSON.parse(resp);
         SignIn(credential.Email, credential.Password);
 
       }
-      
+
     });
   }, []);
 
@@ -49,12 +49,12 @@ function LoginScreen({ navigation }) {
         })).then(() => {
           navigation.navigate('Main', {
             screen: 'Home',
-            params: {  user: JSON.stringify(resp.user) },
+            params: { user: JSON.stringify(resp.user) },
           })
-        }).catch((exp)=>{
+        }).catch((exp) => {
           ShowNormalAlert(CommonMessage.default.Login.Failed.Title, "Email haven't registered");
         });
-      }else{
+      } else {
         ShowNormalAlert(CommonMessage.default.Login.Failed.Title, "Email haven't registered");
       }
     }).catch((exp) => {
@@ -64,6 +64,9 @@ function LoginScreen({ navigation }) {
   }
   return (
     <View style={styles.container}>
+      <Image source={require("../Images/login_logo.jpg")} style={styles.ImageStyle} resizeMode={'stretch'} />
+
+
       <TextInput placeholder={CommonMessage.default.Form.PlaceHolder.Email} style={styles.EmailInput} onChangeText={(text) => { setUserEmail(text) }} />
       <TextInput placeholder={CommonMessage.default.Form.PlaceHolder.Password} secureTextEntry={true} style={styles.PasswordInput} onChangeText={(text) => { setUserPassword(text) }} />
       <TouchableOpacity style={styles.LoginButton} onPress={Login}>
@@ -87,6 +90,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#FFEACA'
+  },
+  ImageStyle: {
+    width: 150,
+    height: 150,
+    marginBottom:20
   },
   EmailInput: {
     borderColor: 'blue',
