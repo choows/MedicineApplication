@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Touchable, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Touchable, ScrollView, Image } from 'react-native';
 import { firebase } from '@react-native-firebase/database';
 import { ShowNormalAlert } from "../CommonFunction/Alert";
 import * as CommonMessage from "../CommonFunction/CommonString";
@@ -33,6 +33,15 @@ function FirstAidDetail({ route, navigation }) {
     const _renderContent = (section) => {
         return (
             <View style={styles.content}>
+                {
+                    section.image_url &&
+                    <View style={{ padding: 10, maxHeight: 700 }}>
+                        <Image
+                            style={{ width: '100%', height: '100%', resizeMode:'cover' }}
+                            source={{ uri: section.image_url }}
+                        />
+                    </View>
+                }
                 {
                     section.Video &&
                     <View style={{ height: 250, width: '100%', padding: 10 }}>

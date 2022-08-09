@@ -137,7 +137,7 @@ function Profile({ route, navigation }) {
                 <TouchableOpacity onPress={() => { selectImage() }} style={{ alignSelf: 'center' }}>
                     {UserInfo.photoURL || image ?
                         <Image
-                            style={{ width: 100, height: 100, borderRadius: 100, backgroundColor: 'red' }}
+                            style={{ width: 100, height: 100, borderRadius: 100, backgroundColor: 'white' }}
                             source={{
                                 uri: image ? image : UserInfo.photoURL,
                             }}
