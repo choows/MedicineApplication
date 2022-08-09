@@ -139,7 +139,7 @@ function MedicineLog({ route, navigation }) {
                     ) :
                         <Text>{CommonMessage.default.MediLog.NoRecord}</Text>
                 }
-                <View style={{ height: 1000 }}>
+                <View style={{ height: 200 }}>
 
                 </View>
             </ScrollView>
@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
     DetailView: {
         width: '100%',
         padding: 5,
-        minHeight: '20%',
+        minHeight: 150,
         flexDirection: 'row'
     },
     NavigationView: {

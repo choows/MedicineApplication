@@ -95,6 +95,9 @@ function AddMedicine({ route, navigation }) {
       ShowNormalAlert("Unable To Add New Reminder", "Image Required");
       return;
     }
+    mydate.setHours(myTime.getHours());
+    mydate.setMinutes(myTime.getMinutes());
+    mydate.setSeconds(myTime.getSeconds());
     if(mydate <= new Date()){
       ShowNormalAlert("Unable To Add New Reminder", "Incorrect Date");
       return;
@@ -176,11 +179,11 @@ function AddMedicine({ route, navigation }) {
           </TouchableOpacity>
         </View>
         <View style={styles.RowContainer}>
-          <Text style={styles.Title}>Medication Name</Text>
+          <Text style={styles.Title}>Medicine Name :</Text>
           <TextInput onChangeText={setMedicineName} style={styles.MediNameTextInput} value={MedicineName} />
         </View>
         <View style={styles.RowContainer}>
-          <Text style={styles.Title}>Date</Text>
+          <Text style={styles.Title}>Date :</Text>
           <TouchableOpacity onPress={() => { setShow(true) }} style={styles.Touchable}>
             <TextInput value={mydate.toDateString()} editable={false} style={styles.InnerTextInput} />
             {isDisplayDate && (
@@ -196,7 +199,7 @@ function AddMedicine({ route, navigation }) {
 
         </View>
         <View style={styles.RowContainer}>
-          <Text style={styles.Title}>Time</Text>
+          <Text style={styles.Title}>Time :</Text>
           <TouchableOpacity onPress={() => { setTimeShow(true) }} style={styles.Touchable}>
             <TextInput value={myTime.toLocaleTimeString()} editable={false} style={styles.InnerTextInput} />
             {isDisplayTime && (
@@ -211,7 +214,7 @@ function AddMedicine({ route, navigation }) {
           </TouchableOpacity>
         </View>
         <View style={styles.RowContainer}>
-          <Text style={styles.Title}>Notes</Text>
+          <Text style={styles.Title}>Notes :</Text>
           <TextInput onChangeText={setNotes} style={styles.MediNameTextInput} value={Notes} />
         </View>
         <TouchableOpacity style={styles.ButtonView} onPress={() => { AddNewReminder() }}>

@@ -36,7 +36,10 @@ function FirstAidDetail({ route, navigation }) {
                 {
                     section.Video &&
                     <View style={{ height: 250, width: '100%', padding: 10 }}>
-                        <Video controls={true} source={{ uri: section.Video}} style={{ width: '100%', height: '100%'}} resizeMode={"stretch"}/>
+                        <Video
+                            controls={true}
+                            source={{ uri: section.Video }}
+                            style={{ width: '100%', height: '100%' }} />
                     </View>
                 }
                 {

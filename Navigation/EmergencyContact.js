@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Linking, Platform } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Linking, Platform, PermissionsAndroid, Image } from 'react-native';
 import { ShowNormalAlert } from "../CommonFunction/Alert";
 import * as CommonMessage from "../CommonFunction/CommonString";
 import { Icon } from "@rneui/themed";
 import { firebase } from '@react-native-firebase/database';
+import * as ImagePicker from 'react-native-image-picker';
 
-// const authForDefaultApp = firebase.auth();
 function EmergencyContact({ route, navigation }) {
     const { user } = route.params;
     const UserInfo = JSON.parse(user)
@@ -15,10 +15,59 @@ function EmergencyContact({ route, navigation }) {
     const [PhoneNumber, setPhoneNumber] = React.useState('');
     const [Address, setAddress] = React.useState('');
     const [Existed, setExisted] = React.useState(false);
+    const [image, setImage] = React.useState(null);
+    const [uploading, setUploading] = React.useState(false);
     const Call = () => {
         Linking.openURL(`tel:${PhoneNumber}`)
     }
-    const ShowOnMap = (lat , lng) => {
+    React.useEffect(() => {
+        RequestPermission();
+    }, []);
+    const RequestPermission = () => {
+        try {
+            const granted = PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.CAMERA,
+                {
+                    title: "Camera Permission",
+                    message:
+                        "Medical2R needs access to your camera ",
+                    buttonNeutral: "Ask Me Later",
+                    buttonNegative: "Cancel",
+                    buttonPositive: "OK"
+                }
+            );
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                //selectFile();
+            }
+        } catch (err) {
+            console.warn(err);
+        }
+    }
+    const selectImage = () => {
+        const options = {
+            maxWidth: 2000,
+            maxHeight: 2000,
+            storageOptions: {
+                skipBackup: true,
+                path: 'images'
+            }
+        };
+        ImagePicker.launchCamera(options, response => {
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
+                const source = { uri: response.assets.pop()?.uri };
+                setImage(source.uri);
+                // uploadImage(source.uri);
+            }
+        });
+    };
+
+    const ShowOnMap = (lat, lng) => {
         const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
         const latLng = `${lat},${lng}`;
         const label = Name;
@@ -35,16 +84,16 @@ function EmergencyContact({ route, navigation }) {
 
         }).then((resp) => {
             var resp_json = JSON.parse(resp);
-            if(resp_json["data"] != []){
+            if (resp_json["data"] != []) {
                 console.log("Found");
                 console.log(resp_json["data"][0].latitude);
                 console.log(resp_json["data"][0].longitude);
-                ShowOnMap(resp_json["data"][0].latitude , resp_json["data"][0].longitude);
-               // console.log(resp.data.latitude);
-               // console.log(resp.data.longitude);
-            }else{
+                ShowOnMap(resp_json["data"][0].latitude, resp_json["data"][0].longitude);
+                // console.log(resp.data.latitude);
+                // console.log(resp.data.longitude);
+            } else {
                 ShowNormalAlert("Show On Map Failed", "Location Not found");
-              //  console.log(resp.data);
+                //  console.log(resp.data);
             }
         }).catch((exp) => {
             console.warn(exp);
@@ -61,32 +110,18 @@ function EmergencyContact({ route, navigation }) {
             return;
         }
         if (!PhoneNumber) {
-            ShowNormalAlert(CommonMessage.default.EmergencyContact.UpdateFailed,  CommonMessage.default.EmergencyContact.FailReason.PhoneRequired);
+            ShowNormalAlert(CommonMessage.default.EmergencyContact.UpdateFailed, CommonMessage.default.EmergencyContact.FailReason.PhoneRequired);
             return;
         }
         if (!Address) {
-            ShowNormalAlert(CommonMessage.default.EmergencyContact.UpdateFailed,  CommonMessage.default.EmergencyContact.FailReason.AddressRequired);
+            ShowNormalAlert(CommonMessage.default.EmergencyContact.UpdateFailed, CommonMessage.default.EmergencyContact.FailReason.AddressRequired);
+            return;
         }
-        const path = "EmergencyContact/" + UserInfo.uid;
-        const JsonFormat = {
-            Name: Name,
-            Relation: Relation,
-            PhoneNumber: PhoneNumber,
-            Address: Address
-        };
-        if (Existed) {
-            firebase.database()
-                .ref(path)
-                .update(JsonFormat)
-                .then(() => { ShowNormalAlert(CommonMessage.default.EmergencyContact.Title, CommonMessage.default.EmergencyContact.UpdateSuccess); GetData(); });
-        } else {
-            firebase.database().ref(path).set(JsonFormat).then((resp) => {
-                ShowNormalAlert(CommonMessage.default.EmergencyContact.Title, CommonMessage.default.EmergencyContact.UpdateSuccess);
-                GetData();
-            }).catch((exp) => {
-                ShowNormalAlert(CommonMessage.default.EmergencyContact.UpdateFailed, exp);
-            })
+        if (!image) {
+            ShowNormalAlert(CommonMessage.default.EmergencyContact.UpdateFailed, "Image Required");
+            return;
         }
+        uploadImage(image);
 
     }
     const GetData = () => {
@@ -97,17 +132,79 @@ function EmergencyContact({ route, navigation }) {
                 setRelation(resp.val().Relation);
                 setPhoneNumber(resp.val().PhoneNumber);
                 setAddress(resp.val().Address);
+                setImage(resp.val().Image_URI)
+                setExisted(true);
             }
         });
     }
+    const uploadImage = async (image_uri) => {
+        const uri = image_uri;
+        const filename = uri.substring(uri.lastIndexOf('/') + 1);
+        const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+        const path = "EmergencyContact/" + UserInfo.uid;
+        if (Existed) {
+            const JsonFormat = {
+                Name: Name,
+                Relation: Relation,
+                PhoneNumber: PhoneNumber,
+                Address: Address,
+                Image_URI: image_uri
+            };
+            firebase.database()
+                .ref(path)
+                .update(JsonFormat)
+                .then(() => {
+                    ShowNormalAlert(CommonMessage.default.EmergencyContact.Title, CommonMessage.default.EmergencyContact.UpdateSuccess);
+                    GetData();
+                });
+        } else {
+            setUploading(true);
+            firebase.storage()
+                .ref(filename)
+                .putFile(uploadUri).then((resp) => {
+                    firebase.storage().ref(resp.metadata.fullPath).getDownloadURL().then((res) => {
+                        const JsonFormat = {
+                            Name: Name,
+                            Relation: Relation,
+                            PhoneNumber: PhoneNumber,
+                            Address: Address,
+                            Image_URI: res
+                        };
+                        firebase.database().ref(path).set(JsonFormat).then((resp) => {
+                            ShowNormalAlert(CommonMessage.default.EmergencyContact.Title, CommonMessage.default.EmergencyContact.UpdateSuccess);
+                            GetData();
+                        }).catch((exp) => {
+                            ShowNormalAlert(CommonMessage.default.EmergencyContact.UpdateFailed, exp);
+                        });
+                    }).catch((exp) => {
+                        ShowNormalAlert("Unable To Update Emergency Contact", exp);
+                    });
+                });
+        }
+
+    };
     React.useEffect(() => {
         GetData();
     }, []);
     return (<View style={styles.container}>
-        <Icon
-            name='person'
-            type='ionicons'
-            size={80} />
+
+        <TouchableOpacity onPress={() => { selectImage() }} style={{ alignSelf: 'center' }}>
+            {image ?
+                <Image
+                    style={{ width: 100, height: 100, borderRadius: 100, backgroundColor: 'red' }}
+                    source={{
+                        uri: image ? image : UserInfo.photoURL,
+                    }}
+                />
+                :
+
+                <Icon
+                    name='person'
+                    type='ionicons'
+                    size={80} />
+            }
+
+        </TouchableOpacity>
         <TextInput style={styles.TextInputStyle} value={Name} onChangeText={setName} placeholder={CommonMessage.default.Form.PlaceHolder.Name} />
         <TextInput style={styles.TextInputStyle} value={Relation} onChangeText={setRelation} placeholder={CommonMessage.default.Form.PlaceHolder.Relationship} />
         <TextInput style={styles.TextInputStyle} value={PhoneNumber} onChangeText={setPhoneNumber} placeholder={CommonMessage.default.Form.PlaceHolder.PhoneNumber} />

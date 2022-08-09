@@ -121,7 +121,7 @@ function SplashScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Text style={styles.Header}>Medical 2R & First Aid</Text>
-      <Image style={styles.ImageStyle} source={require('../Images/Background_Image_Splash.png')} />
+      <Image style={styles.ImageStyle} source={require('../Images/HomePage.jpg')} />
       <TouchableOpacity style={styles.buttonStyle} onPress={onPress}>
         <Text style={styles.buttonfont}>Get Started</Text>
       </TouchableOpacity>
@@ -140,7 +140,8 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     backgroundColor: '#FEFBAC',
-    padding: 15
+    padding: 15,
+    marginTop:20
   },
   buttonfont: {
     fontSize: 25,

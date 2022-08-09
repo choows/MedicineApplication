@@ -124,6 +124,7 @@ function HomeScreen({ route, navigation }) {
         const date = new Date();
         const path = "/user/" + UserInfo.uid;
         firebase.database().ref(path).on('value', (resp) => {
+            console.log(resp);
             setShowPie(false);
             let this_date = [];
             for (var i in resp.val()) {

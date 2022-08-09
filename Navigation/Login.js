@@ -64,7 +64,7 @@ function LoginScreen({ navigation }) {
   }
   return (
     <View style={styles.container}>
-      <Image source={require("../Images/login_logo.jpg")} style={styles.ImageStyle} resizeMode={'stretch'} />
+      <Image source={require("../Images/Logo.jpg")} style={styles.ImageStyle} resizeMode={'stretch'} />
 
 
       <TextInput placeholder={CommonMessage.default.Form.PlaceHolder.Email} style={styles.EmailInput} onChangeText={(text) => { setUserEmail(text) }} />
