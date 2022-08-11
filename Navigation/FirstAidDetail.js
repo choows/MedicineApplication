@@ -37,18 +37,18 @@ function FirstAidDetail({ route, navigation }) {
                     section.image_url &&
                     <View style={{ padding: 10, maxHeight: 700 }}>
                         <Image
-                            style={{ width: '100%', height: '100%', resizeMode:'cover' }}
+                            style={{ width: '100%', height: '100%', resizeMode:'contain' }}
                             source={{ uri: section.image_url }}
                         />
                     </View>
                 }
                 {
                     section.Video &&
-                    <View style={{ height: 250, width: '100%', padding: 10 }}>
+                    <View style={{ maxHeight: 300, width: '100%', padding: 10 }}>
                         <Video
                             controls={true}
                             source={{ uri: section.Video }}
-                            style={{ width: '100%', height: '100%' }} />
+                            style={{ width: '100%', height: '100%' }} resizeMode={'contain'}/>
                     </View>
                 }
                 {

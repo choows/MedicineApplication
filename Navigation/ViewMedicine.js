@@ -29,7 +29,7 @@ function ViewMedicine({ route, navigation }) {
                 <View style={[styles.RowContainer, { marginBottom: 100, alignSelf: 'center' }]}>
                     <View>
                         <Image
-                            style={{ width: 150, height: 150, borderRadius: 100, backgroundColor: 'red' }}
+                            style={{ width: 150, height: 150, borderRadius: 100, backgroundColor: 'white' }}
                             source={{
                                 uri: image,
                             }}

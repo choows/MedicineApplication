@@ -21,7 +21,7 @@ function AddMedicine({ route, navigation }) {
   const [isDisplayDate, setShow] = React.useState(false);
   const [myTime, setTime] = React.useState(new Date());
   const [isDisplayTime, setTimeShow] = React.useState(false);
-  const [image, setImage] = React.useState(null);
+  const [image, setImage] = React.useState('https://firebasestorage.googleapis.com/v0/b/medicalfirebase-525d3.appspot.com/o/MedicationImageTaken.JPG?alt=media&token=e0f46d41-54c7-4612-a07c-d2622a3746c9.jpg');
   const [uploading, setUploading] = React.useState(false);
   const [transferred, setTransferred] = React.useState(0);
 
@@ -124,8 +124,34 @@ function AddMedicine({ route, navigation }) {
     });
   }
   const uploadImage = async (image_uri) => {
+    if(image_uri == "https://firebasestorage.googleapis.com/v0/b/medicalfirebase-525d3.appspot.com/o/MedicationImageTaken.JPG?alt=media&token=e0f46d41-54c7-4612-a07c-d2622a3746c9.jpg"){
+      const path = "/user/" + UserInfo.uid;
+          var JsonFormat = {
+            Date: mydate.toDateString(),
+            Time: myTime.toLocaleTimeString(),
+            Name: MedicineName,
+            Notes: Notes,
+            Active: true,
+            ImagePath: image_uri
+          };
+          var k = path + "/" + firebase.database().ref(path).push().key;
+          firebase.database().ref(k).set(JsonFormat).then((resp) => {
+            ShowNormalAlert("New Reminder added", "Medicine Added");
+            console.log(k);
+            
+          }).then(() => {
+            mydate.setHours(myTime.getHours());
+            mydate.setMinutes(myTime.getMinutes());
+            mydate.setSeconds(myTime.getSeconds());
+            SetNotification(mydate , k);
+          }).then(() => {
+            navigation.goBack();
+          }).catch((exp) => {
+            ShowNormalAlert("Unable To Add New Reminder", exp);
+          });
+          return;
+    }
     const uri = image_uri;
-    console.log("image uri : " + image_uri);
     const filename = uri.substring(uri.lastIndexOf('/') + 1);
     const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
     setUploading(true);
@@ -134,8 +160,8 @@ function AddMedicine({ route, navigation }) {
       .putFile(uploadUri).then((resp) => {
         firebase.storage().ref(resp.metadata.fullPath).getDownloadURL().then((res) => {
           console.log(res);
-          const path = "/user/" + UserInfo.uid;
-          const JsonFormat = {
+          path = "/user/" + UserInfo.uid;
+          JsonFormat = {
             Date: mydate.toDateString(),
             Time: myTime.toLocaleTimeString(),
             Name: MedicineName,
@@ -171,7 +197,7 @@ function AddMedicine({ route, navigation }) {
         <View style={[styles.RowContainer, { marginBottom: 100, alignSelf: 'center' }]}>
           <TouchableOpacity onPress={() => { selectImage() }}>
             <Image
-              style={{ width: 150, height: 150, borderRadius: 100, backgroundColor: 'red' }}
+              style={{ width: 150, height: 150, borderRadius: 100, backgroundColor: 'white' }}
               source={{
                 uri: image,
               }}

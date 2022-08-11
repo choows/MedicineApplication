@@ -11,6 +11,10 @@ function CreateAccount({ navigation }) {
 
     const Register = () => {
         const messsage = CommonMessage.default.Registration;
+        if(!UserEmail.includes('@') || !UserEmail.includes('.com')){
+            ShowNormalAlert(messsage.Failed.Title,"Invalid Email Format");
+            return;
+        }
         if (!UserEmail) {
             ShowNormalAlert(messsage.Failed.Title, messsage.Failed.EmailRequired);
             return;
@@ -32,10 +36,21 @@ function CreateAccount({ navigation }) {
             return;
         }
         firebase.auth().createUserWithEmailAndPassword(UserEmail, UserPassword).then((resp) => {
-            ShowNormalAlert(messsage.Success.Title);
+            console.log(resp);
+             //ShowNormalAlert(messsage.Success.Title);
             navigation.back();
         }).catch((exp) => {
-            ShowNormalAlert(messsage.Failed.Title, "Email have registered");
+            if (exp.code === 'auth/email-already-in-use') {
+                // console.log('That email address is already in use!');
+                ShowNormalAlert(messsage.Failed.Title, "Email have registered");
+              }
+          
+              if (exp.code === 'auth/invalid-email') {
+                ShowNormalAlert(messsage.Failed.Title, "Invalid email");
+                // console.log('That email address is invalid!');
+              }
+
+            // ShowNormalAlert(messsage.Failed.Title, "Email have registered");
             console.warn(exp)
         });
     }

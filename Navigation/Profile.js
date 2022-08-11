@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
     },
     ButtonView: {
         width: '80%',
-        backgroundColor: 'green',
+        backgroundColor: '#82e0aa',
         alignContent: 'center',
         justifyContent: 'center',
         alignItems: "center",
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     },
     SecondButtonView: {
         width: '80%',
-        backgroundColor: 'blue',
+        backgroundColor: '#5dade2',
         alignContent: 'center',
         justifyContent: 'center',
         alignItems: "center",
