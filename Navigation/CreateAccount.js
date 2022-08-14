@@ -37,12 +37,12 @@ function CreateAccount({ navigation }) {
         }
         firebase.auth().createUserWithEmailAndPassword(UserEmail, UserPassword).then((resp) => {
             console.log(resp);
-             //ShowNormalAlert(messsage.Success.Title);
+             ShowNormalAlert(messsage.Success.Title);
             navigation.back();
         }).catch((exp) => {
             if (exp.code === 'auth/email-already-in-use') {
                 // console.log('That email address is already in use!');
-                ShowNormalAlert(messsage.Failed.Title, "Email have registered");
+                ShowNormalAlert(messsage.Failed.Title, "Existing email has been registered. Please try another email.");
               }
           
               if (exp.code === 'auth/invalid-email') {
